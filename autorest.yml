@@ -1,0 +1,17 @@
+input-file:
+  - ./swagger.yml
+
+use-extension:
+  "@microsoft.azure/autorest.java": "2.1.93"
+
+java:
+  - base-folder: .\
+    clear-output-folder: false
+    namespace: autorest.petstore
+    override-client-name: PetStoreClient
+    add-credentials: true
+    sync-methods: none
+    client-side-validation: false
+    license-header: |
+      Describe license header.
+
