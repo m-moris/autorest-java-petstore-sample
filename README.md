@@ -1,10 +1,10 @@
 # autorest.java の 生成サンプル
 
-autorest は Microsoft が開発した、OpenAPI(swagger) から、クライアントコードを自動生成するツールで、各言語（C#, Java, Javascript, go , Python）などに対応しています。もともとはAzure SDKを生成するものだったのですが、一般的なクライアント生成にも利用できます。
+autorest は Microsoft が開発した、OpenAPI(swagger) からクライアントコードを自動生成するツールで、各言語（C#, Java, Javascript, go , Python）などに対応しています。もともとはAzure SDKを生成するものだったのですが、一般的なクライアント生成にも利用できます。
 
 [Azure/autorest: OpenAPI (f.k.a Swagger) Specification code generator. Supports C#, PowerShell, Go, Java, Node.js, TypeScript, Python, Ruby and PHP.](https://github.com/Azure/autorest)
 
-ここでは、Javaのサンプルを紹介します。各言語はExensionと行った形で提供されており、JavaのExtensionは以下です。
+ここでは Javaのサンプルを紹介します。各言語はExensionと行った形で提供されておりJavaのExtensionは以下で公開されています。
 
 [Azure/autorest.java: Extension for AutoRest (https://github.com/Azure/autorest) that generates Java code](https://github.com/Azure/autorest.java)
 
@@ -81,14 +81,50 @@ https://aka.ms/autorest
 
 ### pom.xml の編集
 
-ポイントとしては以下の2点です
+pom.xml を編集します。
 
-- com.microsoft.rest の依存を追加
-- ソースフォルダを複数追加
+
+`com.microsoft.rest` への依存を追加
+
+```xml
+    <dependency>
+      <groupId>com.microsoft.rest</groupId>
+      <artifactId>client-runtime</artifactId>
+      <version>1.6.12</version>
+    </dependency>
+```
+
+次に生成したソースと混ざらないようにソースフォルダを２つにしておきます。
+
+```xml
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>generated/src/main/java</source>
+                <source>src/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+```
 
 ### サンプル
 
-簡単な呼び出しサンプルは以下の通りです。
+呼び出しサンプルを追加します。`generated`フォルダではなく、`src/main/java` 追加します。
 
 ```java
 public class App {
@@ -114,6 +150,7 @@ public class App {
 }
 ```
 
+### 実行
 
 IDE上などから実行してみて結果が取得できることを確認します。
 
